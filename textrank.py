@@ -1,4 +1,5 @@
 from graph_tool.all import *
+import random
 
 
 def createindex():
@@ -42,36 +43,20 @@ def pagerank(g):
 # similarity: a function such that similarity(index[a][1], index[b][1]) 
 # modifies index such that it appends the pagerank to the index.
 def textrank(index, similarity):
-	g = makeGraph(index, similarity)
-	pgr = pageRank(g)
-	printresults(index, pgr, g)
-	for i in range(0, len(index)):
-		index[i].append(pgr[g.vertex(i)])
+    g = makegraph(index, similarity)
+    pgr = pagerank(g)
+    printresults(index, pgr)
 
-	
-def printresults(index, pgr, g):
+
+def printresults(index, pgr):
     pageArr = pgr.get_array()
-    numAllowed = int(len(pageArr) * .35)
-    results = []
-    for i in range(0, len(pageArr)):
-        val = pageArr[i]
-        sen = index[i][0]
-        for j in range(0, numAllowed):
-            if j >= len(results):
-                results.append([sen, val])
-                break
-            elif val > results[j][1]:
-                tempSen = sen
-                tempVal = val
-                sen = results[j][0]
-                val = results[j][1]
-                results[j][0] = tempSen
-                results[j][1] = tempVal
-    for i in range(0, len(results)):
-        print(results[i][0])
+    threshold = sorted(pageArr, reverse=True)[int(len(pageArr) * .35)]
+    for i in range(0, len(index)):
+        if pageArr[i] >= threshold:
+            print(index[i][0])
+
 
 # Debugging
-# import random
-# index = createindex()
-# similarity = lambda x, y: 1 - abs(x - y)
-# textrank(index, similarity)
+index = createindex()
+similarity = lambda x, y: 1 - abs(x - y)
+textrank(index, similarity)

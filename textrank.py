@@ -1,11 +1,10 @@
 from graph_tool.all import *
-
 #makes a graph for textrank
 # index: a list of nodes with the form index[ID] = [text, vector]
 # similarity: a function such that similarity(index[a][1], index[b][1]) 
 # returns the similaity between sentences a and b
 # Returns a graph G with edge property "weight" for weights
-def makeGraph(index, similarity):
+def makegraph(index, similarity):
 	g = Graph(directed=False)
 	weight = g.new_edge_property("float")
 	i = 0
@@ -23,7 +22,7 @@ def makeGraph(index, similarity):
 #accepts a graph of format returned by makeGraph
 #returns a property map of the pagerank pg. 
 # can be used via pg[g.vertex(i)] == pagerank of vertex with ID = i
-def pageRank(g):
+def pagerank(g):
 	pgr = graph_tool.centrality.pagerank(g, damping=.85, weight=g.edge_properties["weight"], epsilon= 1e-6, max_iter=None)
 	return pgr
 
@@ -31,14 +30,36 @@ def pageRank(g):
 # similarity: a function such that similarity(index[a][1], index[b][1]) 
 # returns: 
 def textrank(index, similarity):
-	g = makeGraph(index, similarity)
-	pgr = pageRank(g)
-	
+	g = makegraph(index, similarity)
+	pgr = pagerank(g)
+	printresults(index, pgr, g)
+
+
+def printresults(index, pgr, g):
+	pageArr = pgr.get_array()
+	numAllowed = int(len(pageArr) * .35)
+	results = []
+	for i in range(0, len(pageArr)):
+		val = pageArr[i]
+		sen = index[i][0]
+		for j in range(0, numAllowed):
+			if j >= len(results):
+				results.append([sen, val])
+				break
+			elif val > results[j][1]:
+				tempSen = sen
+				tempVal = val
+				sen = results[j][0]
+				val = results[j][1]
+				results[j][0] = tempSen
+				results[j][1] = tempVal
+	for i in range(0, len(results)):
+		print(results[i][0])
+
 #### Debugging
-#import random
-#index = []
-#for i in range(0, 30):
-#	index.append([str(i), random.random()])
-#similarity = lambda x, y: 1 - abs(x - y)
-#g = makeGraph(index, similarity)
-#print(pageRank(g))
+import random
+index = []
+for i in range(0, 30):
+	index.append([str(i), random.random()])
+similarity = lambda x, y: 1 - abs(x - y)
+textrank(index, similarity)

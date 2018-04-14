@@ -1,11 +1,10 @@
 from graph_tool.all import *
-import random
-
+import embedder.py
 
 def createindex():
     index = []
     for i in range(0, 30):
-        index.append([str(i), random.random()])
+        index.append([str(i), embedder.getSentenceEmbedding(str(i))])
     return index
 
 
@@ -49,14 +48,15 @@ def textrank(index, similarity):
 
 
 def printresults(index, pgr):
+    percentage = 35
     pageArr = pgr.get_array()
-    threshold = sorted(pageArr, reverse=True)[int(len(pageArr) * .35)]
+    threshold = sorted(pageArr, reverse=True)[(len(pageArr) * percentage / 100)]
     for i in range(0, len(index)):
         if pageArr[i] >= threshold:
             print(index[i][0])
 
 
 # Debugging
-index = createindex()
-similarity = lambda x, y: 1 - abs(x - y)
-textrank(index, similarity)
+# index = createindex()
+# similarity = lambda x, y: 1 - abs(x - y)
+# textrank(index, similarity)

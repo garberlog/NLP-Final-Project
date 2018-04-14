@@ -29,10 +29,13 @@ def pageRank(g):
 
 # index: a list of nodes with the form index[ID] = [text, vector]
 # similarity: a function such that similarity(index[a][1], index[b][1]) 
-# returns: 
+# modifies index such that it appends the pagerank to the index.
 def textrank(index, similarity):
 	g = makeGraph(index, similarity)
 	pgr = pageRank(g)
+	for i in range(0, len(index)):
+		index[i].append(pgr[g.vertex(i)])
+
 	
 #### Debugging
 #import random

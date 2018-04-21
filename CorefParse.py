@@ -3,35 +3,48 @@ from parse import parse
 from embedder import makeSentenceEmbeddings
 import spacy
 
+
+# Input: Text file of list of sentences
+# Output: List of sentences with order index and coreference resolution
+#             corefoutput.txt file with list printed out
+
 def main():
 
+    filename = "ender_tmp.txt"
 
     coref = Coref()
     results = []
-    text = parse("ender_tmp.txt")
+    text = parse(filename)
+
+
+    linecount = 0
+    # Example text options (comment out)
     # text = ["Stanley is a bird. Makayla is a fox.", "\tGive me twenty bees."]
-    # text = ["Ender nodded. It was a lie, of course, that it wouldn't hurt a bit. But since adults always said it when it was going to hurt, he could count on that statement as an accurate prediction of the future. Sometimes lies were more dependable than the truth."]
-    for x in text:
-        # singleEmbed = makeSentenceEmbeddings(x,spacy.load('en'))
-        output = resolve(x, coref)
-        results.append(output)
-        # print (singleEmbed)
+    # text = ["Andrew could not remember how to speak. They lifted him onto the table. They checked his pulse, did other things; he did not understand it all"]
+    for line in text:
+        output = resolve(line, coref)
+        results.append([linecount, output])
+        linecount += 1
 
     # for x in range(len(text)):
     #     print (text[x])
     #     print (results[x])
 
-    for x in results:
-        print (x)
+    fd = open("corefoutput.txt", "w")
+
+    for y in results:
+            print (y)
+            fd.write(str(y[0]) + "\t" + str(y[1]) + "\n")
+
+    fd.close()
 
 # Assume: sentenceList is a list of sentences, lines, or some sort of sentence structure.
 # Output: (Undecided)
 def resolve(sentenceList, coref):
 
     # Create empty sentence buffer for coreference resolution
-    resolved = []
+    resolved = ""
     sentenceBuffer = ""
-
 
     for x in sentenceList:
         # Currently attempting to use paragraphs to determine info separation.
@@ -40,15 +53,16 @@ def resolve(sentenceList, coref):
         if x != "\n":
             # add sentence to coreference buffer
             sentenceBuffer += x
+            # print(x)
         else:
             # coref resolve sentence in buffer
             # oneshot = coref.one_shot_coref(sentenceBuffer)
             coref.continuous_coref(sentenceBuffer)
             resolution = coref.get_resolved_utterances()
-            resolved.append(resolution)
-
+            print ("Resolution = " + str(resolution))
 
             # do things with resolution
+            resolved += "".join(resolution)
 
             # clear sentence buffer
             sentenceBuffer = ""
@@ -59,7 +73,7 @@ def resolve(sentenceList, coref):
         # oneshot = coref.one_shot_coref(sentenceBuffer)
         coref.continuous_coref(sentenceBuffer)
         resolution = coref.get_resolved_utterances()
-        resolved.append(resolution)
+        resolved += "".join(resolution)
         # print(resolution)
         sentenceBuffer = ""
 

@@ -1,10 +1,10 @@
 from graph_tool.all import *
-import embedder.py
+import embedder
 
 def createindex():
     index = []
     for i in range(0, 30):
-        index.append([str(i), embedder.getSentenceEmbedding(str(i))])
+        index.append([str(i), embedder.makeSentenceEmbeddings(str(i))])
     return index
 
 
@@ -57,6 +57,6 @@ def printresults(index, pgr):
 
 
 # Debugging
-# index = createindex()
-# similarity = lambda x, y: 1 - abs(x - y)
-# textrank(index, similarity)
+index = createindex()
+similarity = lambda x, y: 1 - abs(x - y)
+textrank(index, similarity)

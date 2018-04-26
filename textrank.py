@@ -1,17 +1,20 @@
 from graph_tool.all import *
+import spacy
 import embedder
+
 
 def createindex():
     index = []
+    nlp = spacy.load('en')
     for i in range(0, 30):
-        index.append([str(i), embedder.makeSentenceEmbeddings(str(i))])
+        index.append([str(i), embedder.makeSentenceEmbeddings(unicode(str(i), "UTF-8"), nlp)])
     return index
 
 
 # makes a graph for textrank
 # index: a list of nodes with the form index[ID] = [text, vector]
 # similarity: a function such that similarity(index[a][1], index[b][1]) 
-# returns the similaity between sentences a and b
+# returns the similaity unichrbetween sentences a and b
 # Returns a graph G with edge property "weight" for weights
 def makegraph(index, similarity):
     g = Graph(directed=False)

@@ -24,9 +24,10 @@ def makeSentenceEmbeddings(sentence, enlp):
     queue = [sentence.root, None]
     depth = 2
     while len(queue) > 0:
-        if queue[0] == None:
+        if queue[0] is None:
             depth += 1
             queue.pop(0)
+            continue
         for child in queue[0].children:
             queue.append(child)
         tok = queue.pop(0)
@@ -35,12 +36,12 @@ def makeSentenceEmbeddings(sentence, enlp):
         if not tok.is_stop:
             factor *= .2
         if tok.tag_ in vblist:
-            if vsb == None:
+            if vsb is None:
                 vsb = wemb
             else:
                 vsb += (wemb * factor)
         elif tok.tag_ in nlist:
-            if ns == None:
+            if ns is None:
                 ns = wemb
             else:
                 ns += (wemb * factor)

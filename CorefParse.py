@@ -9,6 +9,9 @@ import spacy
 #             corefoutput.txt file with list printed out
 
 def main():
+    doCoref()
+
+def doCoref():
 
     filename = "ender_tmp.txt"
 
@@ -37,6 +40,8 @@ def main():
             fd.write(str(y[0]) + "\t" + str(y[1]) + "\n")
 
     fd.close()
+
+    return results
 
 # Assume: sentenceList is a list of sentences, lines, or some sort of sentence structure.
 # Output: (Undecided)

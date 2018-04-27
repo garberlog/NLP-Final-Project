@@ -1,14 +1,14 @@
 from graph_tool.all import *
 import spacy
 import embedder
-import numpy
+import numpy as np
 
 
 def similarity(arr1, arr2):
     num = 0.0
     for i in range(0, len(arr1)):
-        num += arr1.item(i)* arr2.item(i)
-    return num / (numpy.linalg.norm(arr1) * numpy.linalg.norm(arr2))
+        num += arr1.item(i) * arr2.item(i)
+    return num / (np.linalg.norm(arr1) * np.linalg.norm(arr2))
 
 
 def createindex():
@@ -69,4 +69,6 @@ def printresults(index, pgr):
 
 # Debugging
 index = createindex()
+# call parse on input
+# call do coref with parsed input as argument
 textrank(index)

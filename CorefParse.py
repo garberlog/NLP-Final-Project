@@ -1,23 +1,22 @@
 from neuralcoref import Coref
 from parse import parse
-from embedder import makeSentenceEmbeddings
 import spacy
-
 
 
 def main():
     filename = "ender_tmp.txt"
-    doCoref(filename)
+    text = parse(filename)
+    doCoref(text)
+
 
 # Input: Text file of list of sentences
 # Output: List of sentences with order index and coreference resolution
 #             corefoutput.txt file with list printed out
-def doCoref(filename):
+def doCoref(text):
 
     # Initialize Coref object and counters
     coref = Coref()
     results = []
-    text = parse(filename)
     linecount = 0
 
     # Example text options (comment out)
@@ -41,6 +40,7 @@ def doCoref(filename):
     fd.close()
 
     return results
+
 
 # Assume: sentenceList is a list of sentences, lines, or some sort of sentence structure.
 # Output: (Undecided)
@@ -82,6 +82,7 @@ def resolve(sentenceList, coref):
         sentenceBuffer = ""
 
     return resolved
+
 
 if __name__ == "__main__":
     main()

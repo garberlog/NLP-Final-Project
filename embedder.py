@@ -5,7 +5,7 @@ import numpy as np
 vblist = ['VB', 'VBD', 'VBG', 'VBP', 'VBZ', 'RB', 'RBR', 'RBS', 'RP', 'WDT', 'WRB']
 nlist = ['CD', 'JJ', 'JJR', 'JJS', 'NN', 'NNS', 'NNP', 'PRP']
 
-
+embeddinglength = 50
 # add whatever else we need
 # returns numpy array of embedding
 # note that spacy has a
@@ -19,8 +19,8 @@ def getWordEmbedding(word, normalized, POSTAG):
 def makeSentenceEmbeddings(sentence, enlp):
     doc = enlp(sentence)
     sentence = list(doc.sents)[0]
-    vsb = None
-    ns = None
+    vsb = np.array([0.0]*embeddinglength)
+    ns = np.array([0.0]*embeddinglength)
     queue = [sentence.root, None]
     depth = 2
     while len(queue) > 1:

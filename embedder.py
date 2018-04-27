@@ -3,8 +3,8 @@ from math import log
 import numpy as np
 
 vblist = ['VB', 'VBD', 'VBG', 'VBP', 'VBZ', 'RB', 'RBR', 'RBS', 'RP', 'WDT', 'WRB']
-nlist = ['CD', 'JJ', 'JJR', 'JJS', 'NN', 'NNS', 'NNP', 'PRP']
-
+nlist = ['CD', 'JJ', 'JJR', 'JJS', 'NN', 'NNS', 'NNP', 'NNPS', 'PRP']
+PNList = ['NNS', 'NNP', 'NNPS']
 embeddinglength = 50
 # add whatever else we need
 # returns numpy array of embedding
@@ -34,7 +34,7 @@ def makeSentenceEmbeddings(sentence, enlp):
         tok = queue.pop(0)
         wemb = getWordEmbedding(tok.text, tok.lemma_, tok.tag_)
         factor = 1 / log(depth)
-        if not tok.is_stop:
+        if not tok.is_stop and not tok.tag_ in PNlist:
             factor *= .2
         if tok.tag_ in vblist:
             if vsb is None:

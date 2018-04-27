@@ -2,16 +2,18 @@ import spacy
 from math import log
 import numpy as np
 
-vblist = ['VB', 'VBD', 'VBG', 'VBP', 'VBZ', 'RB', 'RBR', 'RBS', 'RP', 'WDT', 'WRB']
+vblist = ['VB', 'VBD', 'VBG', 'VBP', 'VBN', 'VBZ', 'RB', 'RBR', 'RBS', 'RP', 'WDT', 'WRB']
 nlist = ['CD', 'JJ', 'JJR', 'JJS', 'NN', 'NNS', 'NNP', 'NNPS', 'PRP']
-PNlist = ['NNS', 'NNP', 'NNPS']
+PNlist = ['NNP', 'NNPS']
 embeddinglength = 50
 # add whatever else we need
 # returns numpy array of embedding
 # note that spacy has a
 def getWordEmbedding(word, normalized, POSTAG):
-    return np.array([0.0] * 50)
+    return np.array([1.0] * 50)
 
+def defaultVector():
+	return np.array([1.0]*embeddinglength)
 
 # sentence is a unicode string.
 # enlp is a instance of spacy which has been loaded with
@@ -19,8 +21,8 @@ def getWordEmbedding(word, normalized, POSTAG):
 def makeSentenceEmbeddings(sentence, enlp):
     doc = enlp(sentence)
     sentence = list(doc.sents)[0]
-    vsb = np.array([0.0]*embeddinglength)
-    ns = np.array([0.0]*embeddinglength)
+    vsb = defaultVector()
+    ns = defaultVector()
     queue = [sentence.root, None]
     depth = 2
     while len(queue) > 1:

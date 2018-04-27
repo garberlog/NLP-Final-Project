@@ -21,8 +21,8 @@ def defaultVector():
 def makeSentenceEmbeddings(sentence, enlp):
     doc = enlp(sentence)
     sentence = list(doc.sents)[0]
-    vsb = defaultVector()
-    ns = defaultVector()
+    vsb = None #defaultVector()
+    ns = None # defaultVector()
     queue = [sentence.root, None]
     depth = 2
     while len(queue) > 1:
@@ -48,5 +48,10 @@ def makeSentenceEmbeddings(sentence, enlp):
                 ns = wemb
             else:
                 ns += (wemb * factor)
+		#endloop
+	if ns is None:
+		ns = defaultVector()
+	if vsb is None:
+		vsb = defaultVector()
     embedding = np.append(ns, vsb)
     return embedding

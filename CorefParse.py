@@ -4,20 +4,22 @@ from embedder import makeSentenceEmbeddings
 import spacy
 
 
+
+def main():
+    filename = "ender_tmp.txt"
+    doCoref(filename)
+
 # Input: Text file of list of sentences
 # Output: List of sentences with order index and coreference resolution
 #             corefoutput.txt file with list printed out
+def doCoref(filename):
 
-def main():
-
-    filename = "ender_tmp.txt"
-
+    # Initialize Coref object and counters
     coref = Coref()
     results = []
     text = parse(filename)
-
-
     linecount = 0
+
     # Example text options (comment out)
     # text = ["Stanley is a bird. Makayla is a fox.", "\tGive me twenty bees."]
     # text = ["Andrew could not remember how to speak. They lifted him onto the table. They checked his pulse, did other things; he did not understand it all"]
@@ -37,6 +39,8 @@ def main():
             fd.write(str(y[0]) + "\t" + str(y[1]) + "\n")
 
     fd.close()
+
+    return results
 
 # Assume: sentenceList is a list of sentences, lines, or some sort of sentence structure.
 # Output: (Undecided)

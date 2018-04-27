@@ -23,10 +23,11 @@ def makeSentenceEmbeddings(sentence, enlp):
     ns = None
     queue = [sentence.root, None]
     depth = 2
-    while len(queue) > 0:
+    while len(queue) > 1:
         if queue[0] is None:
             depth += 1
             queue.pop(0)
+            queue.append(None)
             continue
         for child in queue[0].children:
             queue.append(child)

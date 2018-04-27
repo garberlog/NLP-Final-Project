@@ -1,6 +1,14 @@
 from graph_tool.all import *
 import spacy
 import embedder
+import numpy
+
+
+def similarity(arr1, arr2):
+    num = 0.0
+    for i in range(0, len(arr1)):
+        num += arr1.item(i)* arr2.item(i)
+    return num / (numpy.linalg.norm(arr1) * numpy.linalg.norm(arr2))
 
 
 def createindex():
@@ -16,7 +24,7 @@ def createindex():
 # similarity: a function such that similarity(index[a][1], index[b][1]) 
 # returns the similaity unichrbetween sentences a and b
 # Returns a graph G with edge property "weight" for weights
-def makegraph(index, similarity):
+def makegraph(index):
     g = Graph(directed=False)
     weight = g.new_edge_property("float")
     i = 0
@@ -44,8 +52,8 @@ def pagerank(g):
 # index: a list of nodes with the form index[ID] = [text, vector]
 # similarity: a function such that similarity(index[a][1], index[b][1]) 
 # modifies index such that it appends the pagerank to the index.
-def textrank(index, similarity):
-    g = makegraph(index, similarity)
+def textrank(index):
+    g = makegraph(index)
     pgr = pagerank(g)
     printresults(index, pgr)
 
@@ -61,5 +69,4 @@ def printresults(index, pgr):
 
 # Debugging
 index = createindex()
-similarity = lambda x, y: 1 - abs(x - y)
-textrank(index, similarity)
+textrank(index)

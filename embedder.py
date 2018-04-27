@@ -4,7 +4,7 @@ import numpy as np
 
 vblist = ['VB', 'VBD', 'VBG', 'VBP', 'VBZ', 'RB', 'RBR', 'RBS', 'RP', 'WDT', 'WRB']
 nlist = ['CD', 'JJ', 'JJR', 'JJS', 'NN', 'NNS', 'NNP', 'NNPS', 'PRP']
-PNList = ['NNS', 'NNP', 'NNPS']
+PNlist = ['NNS', 'NNP', 'NNPS']
 embeddinglength = 50
 # add whatever else we need
 # returns numpy array of embedding

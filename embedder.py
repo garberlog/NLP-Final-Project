@@ -5,7 +5,20 @@ import numpy as np
 vblist = ['VB', 'VBD', 'VBG', 'VBP', 'VBN', 'VBZ', 'RB', 'RBR', 'RBS', 'RP', 'WDT', 'WRB']
 nlist = ['CD', 'JJ', 'JJR', 'JJS', 'NN', 'NNS', 'NNP', 'NNPS', 'PRP']
 PNlist = ['NNP', 'NNPS']
+embeddings = {}
 embeddinglength = 300
+
+
+def initEmbeddings():
+    filename = "glove.840B.300d/glove.840B.300d-char.txt"
+    infile = open(filename, "r")
+    for line in infile:
+        if len(line) > 0:
+            line = line[0:len(line)-1]
+            embedding = line.split(' ')
+            char = embedding[0]
+            embedding = embedding[1:]
+            embeddings[char] = embedding
 
 
 # add whatever else we need
@@ -14,6 +27,14 @@ embeddinglength = 300
 def getWordEmbedding(token):
     if token.has_vector:
         return token.vector
+    elif len(embeddings) > 0:
+        vector = [0.0] * embeddinglength
+        for char in token.text:
+            for i in range(0, embeddinglength):
+                vector[i] += float(embeddings[char][i])
+        for i in range(0, embeddinglength):
+            vector[i] /= len(token.text)
+        return vector
     return defaultVector()
 
 

@@ -14,6 +14,7 @@ def similarity(arr1, arr2):
 def createindex():
     index = []
     nlp = spacy.load('en_vectors_web_lg')
+    embedder.initEmbeddings()
     for i in range(0, 30):
         index.append([str(i), embedder.makeSentenceEmbeddings(unicode(str(i), "UTF-8"), nlp)])
     return index

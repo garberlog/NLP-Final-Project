@@ -5,14 +5,16 @@ import numpy as np
 vblist = ['VB', 'VBD', 'VBG', 'VBP', 'VBN', 'VBZ', 'RB', 'RBR', 'RBS', 'RP', 'WDT', 'WRB']
 nlist = ['CD', 'JJ', 'JJR', 'JJS', 'NN', 'NNS', 'NNP', 'NNPS', 'PRP']
 PNlist = ['NNP', 'NNPS']
-embeddinglength = 50
+embeddinglength = 300
 
 
 # add whatever else we need
 # returns numpy array of embedding
 # note that spacy has a
-def getWordEmbedding(word, normalized, POSTAG):
-    return np.array([1.0] * 50)
+def getWordEmbedding(token):
+    if token.has_vector:
+        return token.vector
+    return defaultVector()
 
 
 def defaultVector():
@@ -24,6 +26,7 @@ def defaultVector():
 # an appropriate model. if in doubt, spacy.load('en') should be provided
 def makeSentenceEmbeddings(sentence, enlp):
     doc = enlp(sentence)
+    doc[0].is_sent_start = True
     sentence = list(doc.sents)[0]
     vsb = None  # defaultVector()
     ns = None  # defaultVector()
@@ -38,7 +41,7 @@ def makeSentenceEmbeddings(sentence, enlp):
         for child in queue[0].children:
             queue.append(child)
         tok = queue.pop(0)
-        wemb = getWordEmbedding(tok.text, tok.lemma_, tok.tag_)
+        wemb = getWordEmbedding(tok)
         factor = 1 / log(depth)
         if not tok.is_stop and not tok.tag_ in PNlist:
             factor *= .2

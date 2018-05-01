@@ -24,7 +24,7 @@ def doCoref(text):
     # text = ["Andrew could not remember how to speak. They lifted him onto the table. They checked his pulse, did other things; he did not understand it all"]
     for line in text:
         output = resolve(line, coref)
-        results.append([linecount, output])
+        results.append([output])
         linecount += 1
 
     # for x in range(len(text)):
@@ -34,8 +34,8 @@ def doCoref(text):
     fd = open("corefoutput.txt", "w")
 
     for y in results:
-            print (y)
-            fd.write(str(y[0]) + "\t" + str(y[1]) + "\n")
+        # print (y)
+        fd.write(str(y[0]) + "\n")
 
     fd.close()
 
@@ -61,7 +61,7 @@ def resolve(sentenceList, coref):
         else:
             # coref resolve sentence in buffer
             # oneshot = coref.one_shot_coref(sentenceBuffer)
-            coref.continuous_coref(sentenceBuffer)
+            coref.continuous_coref(unicode(sentenceBuffer, "UTF-8"))
             resolution = coref.get_resolved_utterances()
             print ("Resolution = " + str(resolution))
 
@@ -75,7 +75,7 @@ def resolve(sentenceList, coref):
     # Parse remaining info
     if sentenceBuffer != "":
         # oneshot = coref.one_shot_coref(sentenceBuffer)
-        coref.continuous_coref(sentenceBuffer)
+        coref.continuous_coref(unicode(sentenceBuffer, "UTF-8"))
         resolution = coref.get_resolved_utterances()
         resolved += "".join(resolution)
         # print(resolution)

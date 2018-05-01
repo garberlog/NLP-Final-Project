@@ -45,7 +45,7 @@ def defaultVector():
 # sentence is a unicode string.
 # enlp is a instance of spacy which has been loaded with
 # an appropriate model. if in doubt, spacy.load('en') should be provided
-def makeSentenceEmbeddings(sentence, enlp):
+def getSentenceEmbedding(sentence, enlp):
     doc = enlp(sentence)
     doc[0].is_sent_start = True
     sentence = list(doc.sents)[0]
@@ -64,7 +64,7 @@ def makeSentenceEmbeddings(sentence, enlp):
         tok = queue.pop(0)
         wemb = getWordEmbedding(tok)
         factor = 1 / log(depth)
-        if not tok.is_stop and not tok.tag_ in PNlist:
+        if not tok.is_stop and tok.tag_ not in PNlist:
             factor *= .2
         if tok.tag_ in vblist:
             if vsb is None:

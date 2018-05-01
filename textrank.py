@@ -1,7 +1,8 @@
 from graph_tool.all import *
+import numpy as np
 import spacy
 import embedder
-import numpy as np
+import CorefParse
 
 
 def similarity(arr1, arr2):
@@ -11,12 +12,12 @@ def similarity(arr1, arr2):
     return num / (np.linalg.norm(arr1) * np.linalg.norm(arr2))
 
 
-def createindex():
-    index = []
+def makeEmbeddings(index):
     nlp = spacy.load('en_vectors_web_lg')
     embedder.initEmbeddings()
-    for i in range(0, 30):
-        index.append([str(i), embedder.makeSentenceEmbeddings(unicode(str(i), "UTF-8"), nlp)])
+    for i in range(0, len(index)):
+        sentence = index[i][0]
+        index[i] = ([sentence, embedder.getSentenceEmbedding(sentence, nlp)])
     return index
 
 
@@ -45,8 +46,7 @@ def makegraph(index):
 # returns a property map of the pagerank pg.
 # can be used via pg[g.vertex(i)] == pagerank of vertex with ID = i
 def pagerank(g):
-    pgr = graph_tool.centrality.pagerank(g, damping=.85, weight=g.edge_properties["weight"], epsilon=1e-6,
-                                         max_iter=None)
+    pgr = graph_tool.centrality.pagerank(g, damping=.85, weight=g.edge_properties["weight"], epsilon=1e-6, max_iter=None)
     return pgr
 
 
@@ -69,7 +69,8 @@ def printresults(index, pgr):
 
 
 # Debugging
-index = createindex()
-# call parse on input
-# call do coref with parsed input as argument
+filename = "ender_tmp.txt"
+text = CorefParse.parse(filename)
+index = CorefParse.doCoref(text)
+index = makeEmbeddings(index)
 textrank(index)

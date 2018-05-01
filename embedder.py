@@ -30,8 +30,9 @@ def getWordEmbedding(token):
     elif len(embeddings) > 0:
         vector = [0.0] * embeddinglength
         for char in token.text:
-            for i in range(0, embeddinglength):
-                vector[i] += float(embeddings[char][i])
+            if embeddings.has_key(char):
+                for i in range(0, embeddinglength):
+                    vector[i] += float(embeddings[char][i])
         for i in range(0, embeddinglength):
             vector[i] /= len(token.text)
         return np.array(vector)

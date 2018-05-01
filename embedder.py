@@ -34,7 +34,7 @@ def getWordEmbedding(token):
                 vector[i] += float(embeddings[char][i])
         for i in range(0, embeddinglength):
             vector[i] /= len(token.text)
-        return vector
+        return np.array(vector)
     return defaultVector()
 
 
@@ -46,8 +46,8 @@ def defaultVector():
 # enlp is a instance of spacy which has been loaded with
 # an appropriate model. if in doubt, spacy.load('en') should be provided
 def getSentenceEmbedding(sentence, enlp):
-    doc = enlp(sentence)
-    doc[0].is_sent_start = True
+    doc = enlp(sentence.strip())
+    print doc[0].is_sent_start
     sentence = list(doc.sents)[0]
     vsb = None  # defaultVector()
     ns = None  # defaultVector()

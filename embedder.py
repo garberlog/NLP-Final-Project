@@ -47,7 +47,6 @@ def defaultVector():
 # an appropriate model. if in doubt, spacy.load('en') should be provided
 def getSentenceEmbedding(sentence, enlp):
     doc = enlp(sentence.strip())
-    print doc[0].is_sent_start
     sentence = list(doc.sents)[0]
     vsb = None  # defaultVector()
     ns = None  # defaultVector()

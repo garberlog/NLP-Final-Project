@@ -33,6 +33,7 @@ def parse(filename):
                     count += 1
                     quote = 0
                 else:
+                    temp += " "
                     quote = 0
         else:
             # in quote, continue no matter what

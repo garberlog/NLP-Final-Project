@@ -13,7 +13,7 @@ def similarity(arr1, arr2):
 
 
 def makeEmbeddings(index):
-    nlp = spacy.load('en_vectors_web_lg')
+    nlp = spacy.load('en_core_web_lg')
     embedder.initEmbeddings()
     for i in range(0, len(index)):
         sentence = index[i][0]

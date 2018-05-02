@@ -6,7 +6,10 @@ import spacy
 def main():
     filename = "ender_tmp.txt"
     text = parse(filename)
-    doCoref(text)
+    results = doCoref(text)
+
+    for x in results:
+        print (x)
 
 
 # Input: Text file of list of sentences
@@ -57,11 +60,10 @@ def resolve(sentenceList, coref):
         if x != "\n":
             # add sentence to coreference buffer
             sentenceBuffer += x
-            # print(x)
         else:
             # coref resolve sentence in buffer
             # oneshot = coref.one_shot_coref(sentenceBuffer)
-            coref.continuous_coref(unicode(sentenceBuffer, "UTF-8"))
+            coref.continuous_coref(sentenceBuffer, None, None)
             resolution = coref.get_resolved_utterances()
             print ("Resolution = " + str(resolution))
 
@@ -75,10 +77,9 @@ def resolve(sentenceList, coref):
     # Parse remaining info
     if sentenceBuffer != "":
         # oneshot = coref.one_shot_coref(sentenceBuffer)
-        coref.continuous_coref(unicode(sentenceBuffer, "UTF-8"))
+        coref.one_shot_coref(sentenceBuffer, None, None)
         resolution = coref.get_resolved_utterances()
         resolved += "".join(resolution)
-        # print(resolution)
         sentenceBuffer = ""
 
     return resolved

@@ -6,9 +6,9 @@ import CorefParse
 
 
 def similarity(arr1, arr2):
-    num = 0.0
-    for i in range(0, len(arr1)):
-        num += arr1.item(i) * arr2.item(i)
+    num = sum(arr1 * arr2)
+    #for i in range(0, len(arr1)):
+    #    num += arr1.item(i) * arr2.item(i)
     return num / (np.linalg.norm(arr1) * np.linalg.norm(arr2))
 
 
@@ -32,10 +32,12 @@ def makegraph(index):
     i = 0
     while i < len(index):
         g.add_vertex()
-        j = 0
+        j = max(0, i - 1000)
         while j < i:
-            e = g.add_edge(g.vertex(i), g.vertex(j))
-            weight[e] = similarity(index[i][1], index[j][1])
+            w = similarity(index[i][1], index[j][1])
+            if w > .3:
+                e = g.add_edge(g.vertex(i), g.vertex(j))
+                weight[e] = w
             j += 1
         i += 1
     g.edge_properties["weight"] = weight
@@ -69,7 +71,7 @@ def printresults(index, pgr):
 
 
 # Debugging
-filename = "ender_tmp.txt"
+filename = "../1984_a.txt"
 text = CorefParse.parse(filename)
 index = CorefParse.doCoref(text)
 index = makeEmbeddings(index)

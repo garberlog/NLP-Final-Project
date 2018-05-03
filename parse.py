@@ -19,8 +19,13 @@ def parse(filename):
     ender = ".", "?", "!"  # in case delimiters changes
     for count in range(0, len(fileall)):
         char = fileall[count]
-        # quote starting
-        if char == "\"":
+        if fileall[count-1] == "\n" and char == "\n":
+            temp = "\n"
+            everything.append(temp)
+            temp = ""
+
+            # quote starting
+        elif char == "\"":
             temp += char
             if quote == 0:
                 quote = 1

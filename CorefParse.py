@@ -25,10 +25,10 @@ def doCoref(text):
 
     results = resolve(text, coref)
 
-    fd = open("corefoutput.txt", "w")
-    for y in results:
-        fd.write(str(y[0]) + "\n")
-    fd.close()
+    # fd = open("corefoutput.txt", "w")
+    # for y in results:
+    #     fd.write(str(y[0]) + "\n")
+    # fd.close()
 
     return results
 

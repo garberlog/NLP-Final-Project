@@ -69,7 +69,7 @@ def printresults(index, pgr):
 
 
 # Debugging
-filename = "EndersGamePDF.txt"
+filename = "1984.txt"
 text = CorefParse.parse(filename)
 index = CorefParse.doCoref(text)
 index = makeEmbeddings(index)

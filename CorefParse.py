@@ -45,17 +45,17 @@ def resolve(sentenceList, coref):
         # Other ideas: Occurrence of new Proper Noun/title of character?
         #               Mix of both?
 
-        if sentenceBuffer != "\n":
+        # if sentenceBuffer != "\n":
             # coref resolve sentence in buffer
             # oneshot = coref.one_shot_coref(sentenceBuffer)
-            coref.one_shot_coref(unicode(sentenceBuffer, "UTF-8"))
-            resolution = coref.get_resolved_utterances()
-            resolved.append(["".join(resolution)])
-        else:
-            # oneshot = coref.one_shot_coref(sentenceBuffer)
-            coref.one_shot_coref(unicode(sentenceBuffer, "UTF-8"))
-            resolution = coref.get_resolved_utterances()
-            resolved.append(["".join(resolution)])
+        coref.one_shot_coref(unicode(sentenceBuffer, "UTF-8"))
+        resolution = coref.get_resolved_utterances()
+        resolved.append(["".join(resolution)])
+        # else:
+        #     # oneshot = coref.one_shot_coref(sentenceBuffer)
+        #     coref.one_shot_coref(unicode(sentenceBuffer, "UTF-8"))
+        #     resolution = coref.get_resolved_utterances()
+        #     resolved.append(["".join(resolution)])
 
     return resolved
 

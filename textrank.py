@@ -35,7 +35,7 @@ def makegraph(index):
         j = max(0, i - 1000)
         while j < i:
             w = similarity(index[i][1], index[j][1])
-            if w > .3:
+            if w > .1:
                 e = g.add_edge(g.vertex(i), g.vertex(j))
                 weight[e] = w
             j += 1

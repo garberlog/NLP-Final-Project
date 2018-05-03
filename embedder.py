@@ -82,4 +82,5 @@ def getSentenceEmbedding(sentence, enlp):
     if vsb is None:
         vsb = defaultVector()
     embedding = np.append(ns, vsb)
+    embedding = embedding / max(embedding)
     return embedding

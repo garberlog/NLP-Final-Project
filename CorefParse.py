@@ -1,6 +1,5 @@
 from neuralcoref import Coref
 from parse import parse
-import spacy
 
 
 def main():
@@ -23,55 +22,35 @@ def doCoref(text):
 
     # Initialize Coref object and counters
     coref = Coref()
-    results = []
-    linecount = 0
-
-    # Example text options (comment out)
-    # text = ["Stanley is a bird. Makayla is a fox.", "\tGive me twenty bees."]
-    # text = ["Andrew could not remember how to speak. They lifted him onto the table. They checked his pulse, did other things; he did not understand it all"]
 
     results = resolve(text, coref)
 
-    linecount += 1
-
-    # for x in range(len(text)):
-    #     print (text[x])
-    #     print (results[x])
-
     fd = open("corefoutput.txt", "w")
-
     for y in results:
-        # print (y)
         fd.write(str(y[0]) + "\n")
-
     fd.close()
 
     return results
 
 
 # Assume: sentenceList is a list of sentences, lines, or some sort of sentence structure.
-# Output: (Undecided)
+# Output: (a list of resolved sentences (the index))
 def resolve(sentenceList, coref):
 
     # Create empty sentence buffer for coreference resolution
     resolved = []
-    sentenceBuffer = ""
 
     for sentenceBuffer in sentenceList:
         # Currently attempting to use paragraphs to determine info separation.
         # Other ideas: Occurrence of new Proper Noun/title of character?
         #               Mix of both?
+
         if sentenceBuffer != "\n":
             # coref resolve sentence in buffer
             # oneshot = coref.one_shot_coref(sentenceBuffer)
             coref.one_shot_coref(unicode(sentenceBuffer, "UTF-8"))
             resolution = coref.get_resolved_utterances()
-            # print ("Resolution = " + str(resolution))
-
-            # do things with resolution
             resolved.append(["".join(resolution)])
-
-        # Parse remaining info
         else:
             # oneshot = coref.one_shot_coref(sentenceBuffer)
             coref.one_shot_coref(unicode(sentenceBuffer, "UTF-8"))

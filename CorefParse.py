@@ -64,7 +64,7 @@ def resolve(sentenceList, coref):
         if sentenceBuffer != "\n":
             # coref resolve sentence in buffer
             # oneshot = coref.one_shot_coref(sentenceBuffer)
-            coref.one_shot_coref(sentenceBuffer)
+            coref.one_shot_coref(unicode(sentenceBuffer, "UTF-8"))
             resolution = coref.get_resolved_utterances()
             # print ("Resolution = " + str(resolution))
 
@@ -74,7 +74,7 @@ def resolve(sentenceList, coref):
         # Parse remaining info
         else:
             # oneshot = coref.one_shot_coref(sentenceBuffer)
-            coref.one_shot_coref(sentenceBuffer)
+            coref.one_shot_coref(unicode(sentenceBuffer, "UTF-8"))
             resolution = coref.get_resolved_utterances()
             resolved.append("".join(resolution))
 
